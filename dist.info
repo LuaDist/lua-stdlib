@@ -1,7 +1,7 @@
 --- This file is part of LuaDist project
 
 name = "lua-stdlib"
-version = "16"
+version = "20"
 
 desc = "Library of modules for common programming tasks"
 license = "MIT/X11"
