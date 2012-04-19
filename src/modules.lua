@@ -1,6 +1,6 @@
 return {
   "debug_init",
-  "strict",
+  --"strict",
   "base",
   "package_ext",
   "debug_ext",
@@ -12,4 +12,5 @@ return {
   "io_ext",
   "getopt",
   "set",
+  "strbuf",
 }
