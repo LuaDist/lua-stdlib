@@ -1,7 +1,7 @@
 --- This file is part of LuaDist project
 
 name = "lua-stdlib"
-version = "20"
+version = "26"
 
 desc = "Library of modules for common programming tasks"
 license = "MIT/X11"
@@ -10,5 +10,5 @@ maintainer = "Peter Drahos"
 
 depends = {
 	"lua ~> 5.1",
-	"lrexlib >=2.2.1"
 }
+-- fstable requires lua 5.2, posix and lfs
