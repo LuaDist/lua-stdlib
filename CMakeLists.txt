@@ -5,7 +5,8 @@
 
 project ( lua-stdlib NONE )
 cmake_minimum_required ( VERSION 2.6 )
-include ( dist.cmake )
+include ( cmake/dist.cmake )
+include ( lua )
 
 set ( VERSION 26 )  #~2DO: get from dist.info
 configure_file ( src/std.lua.in ${CMAKE_CURRENT_BINARY_DIR}/std.lua )
@@ -35,3 +36,7 @@ install_lua_module ( xml src/xml.lua )
 install_lua_module ( std ${CMAKE_CURRENT_BINARY_DIR}/std.lua )
 
 install_data ( AUTHORS README )  # ignore: INSTALL
+
+# very basic test
+file ( WRITE "${CMAKE_CURRENT_BINARY_DIR}/t/t.lua" "require 'std'" )
+add_lua_test ( "${CMAKE_CURRENT_BINARY_DIR}/t/t.lua" )

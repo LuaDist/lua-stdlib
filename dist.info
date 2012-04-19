@@ -4,6 +4,7 @@ name = "lua-stdlib"
 version = "26"
 
 desc = "Library of modules for common programming tasks"
+author = "Reuben Thomas"
 license = "MIT/X11"
 url = "http://luaforge.net/projects/stdlib/"
 maintainer = "Peter Drahos"
