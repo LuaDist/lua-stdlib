@@ -8,8 +8,7 @@ cmake_minimum_required ( VERSION 2.8 )
 include ( cmake/dist.cmake )
 include ( lua )
 
-set ( VERSION 26 )
-#~2DO: get from dist.info
+set ( VERSION ${DIST_VERSION} )
 configure_file ( src/std.lua.in ${CMAKE_CURRENT_BINARY_DIR}/std.lua )
 
 install_lua_module ( base src/base.lua )

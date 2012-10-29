@@ -1,7 +1,7 @@
 --- This file is part of LuaDist project
 
 name = "lua-stdlib"
-version = "26"
+version = "28"
 
 desc = "Library of modules for common programming tasks"
 author = "Reuben Thomas"
@@ -10,6 +10,6 @@ url = "http://luaforge.net/projects/stdlib/"
 maintainer = "Peter Drahos"
 
 depends = {
-	"lua ~> 5.1",
+	"lua >= 5.1",
 }
 -- fstable requires lua 5.2, posix and lfs
