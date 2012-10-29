@@ -14,6 +14,30 @@ require "string_ext"
 require "strbuf"
 
 
+--- Require a module with a particular version
+-- @param module module to require
+-- @param min lowest acceptable version (default: any)
+-- @param too_big lowest version that is too big (default: none)
+-- @pattern pattern to match version in <code>module.version</code> or
+-- <code>module.VERSION</code> (default: <code>".*[%.%d]+"</code>
+function _G.require_version (module, min, too_big, pattern)
+  local function version_to_list (v)
+    return list.new (string.split (v, "%."))
+  end
+  local function module_version (module, pattern)
+    return version_to_list (string.match (module.version or module._VERSION,
+                                          pattern or ".*[%.%d]+"))
+  end
+  local m = require (module)
+  if min then
+    assert (module_version (m, pattern) >= version_to_list (min))
+  end
+  if too_big then
+    assert (module_version (m, pattern) < version_to_list (too_big))
+  end
+  return m
+end
+
 --- Return given metamethod, if any, or nil.
 -- @param x object to get metamethod of
 -- @param n name of metamethod to get
@@ -274,6 +298,23 @@ function _G.compose (...)
          end
 end
 
+--- Memoize a function, by wrapping it in a functable.
+-- @param fn function that returns a single result
+-- @return memoized function
+function _G.memoize (fn)
+  return setmetatable ({}, {
+    __call = function (self, ...)
+               local k = tostring ({...})
+               local v = self[k]
+               if v == nil then
+                 v = fn (...)
+                 self[k] = v
+               end
+               return v
+             end
+  })
+end
+
 --- Evaluate a string.
 -- @param s string
 -- @return value of string
@@ -296,6 +337,13 @@ function _G.ripairs (t)
   t, #t + 1
 end
 
+---
+-- @class function
+-- @name tree_Iterator
+-- @param n current node
+-- @return type ("leaf", "branch" (pre-order) or "join" (post-order))
+-- @return path to node ({i1...ik})
+-- @return node
 local function _nodes (it, tr)
   local p = {}
   local function visit (n)
@@ -331,14 +379,6 @@ end
 function _G.inodes (tr)
   return _nodes (ipairs, tr)
 end
-
----
--- @class function
--- @name tree_Iterator
--- @param n current node
--- @return type ("leaf", "branch" (pre-order) or "join" (post-order))
--- @return path to node ({i1...ik})
--- @return node
 
 local function _leaves (it, tr)
   local function visit (n)
@@ -464,44 +504,33 @@ end
 
 -- Function forms of operators.
 -- FIXME: Make these visible in LuaDoc (also list.concat in list)
-_G.op["[]"] =
-  function (t, s)
-    return t[s]
-  end
-
-_G.op["+"] =
-  function (a, b)
-    return a + b
-  end
-_G.op["-"] =
-  function (a, b)
-    return a - b
-  end
-_G.op["*"] =
-  function (a, b)
-    return a * b
-  end
-_G.op["/"] =
-  function (a, b)
-    return a / b
-  end
-_G.op["and"] =
-  function (a, b)
-    return a and b
-  end
-_G.op["or"] =
-  function (a, b)
-    return a or b
-  end
-_G.op["not"] =
-  function (a)
-    return not a
-  end
-_G.op["=="] =
-  function (a, b)
-    return a == b
-  end
-_G.op["~="] =
-  function (a, b)
-    return a ~= b
-  end
+_G.op["[]"] = function (t, s)
+  return t[s]
+end
+_G.op["+"] = function (a, b)
+  return a + b
+end
+_G.op["-"] = function (a, b)
+  return a - b
+end
+_G.op["*"] = function (a, b)
+  return a * b
+end
+_G.op["/"] = function (a, b)
+  return a / b
+end
+_G.op["and"] = function (a, b)
+  return a and b
+end
+_G.op["or"] = function (a, b)
+  return a or b
+end
+_G.op["not"] = function (a)
+  return not a
+end
+_G.op["=="] = function (a, b)
+  return a == b
+end
+_G.op["~="] = function (a, b)
+  return a ~= b
+end
