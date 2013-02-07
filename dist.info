@@ -1,9 +1,9 @@
 --- This file is part of LuaDist project
 
 name = "lua-stdlib"
-version = "28"
+version = "29"
 
-desc = "Library of modules for common programming tasks"
+desc = "General Lua libraries"
 author = "Reuben Thomas"
 license = "MIT/X11"
 url = "http://luaforge.net/projects/stdlib/"
